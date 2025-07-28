@@ -1,0 +1,16 @@
+{
+  "name": "growthyari-backend",
+  "version": "1.0.0",
+  "description": "Backend API for GrowthYari social media platform",
+  "main": "dist/server.js",
+  "scripts": {
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts"
+  },
+  "keywords": ["social-media", "professional-networking", "api"],
+  "author": "GrowthYari Team",
+  "license": "MIT"
+}
