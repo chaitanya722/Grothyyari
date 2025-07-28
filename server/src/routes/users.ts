@@ -88,19 +88,21 @@ router.get('/:id/stats', asyncHandler(async (req, res) => {
     { count: sessionsCount },
     { count: connectionsCount },
     { count: postsCount },
-    { data: recentSessions }
+    { data: recentSessions, error: sessionsError }
   ] = await Promise.all([
     supabaseAdmin.from('sessions').select('*', { count: 'exact', head: true }).eq('expert_id', id).eq('status', 'completed'),
     supabaseAdmin.from('connections').select('*', { count: 'exact', head: true }).or(`user1_id.eq.${id},user2_id.eq.${id}`),
-    supabaseAdmin.from('posts').select('*', { count: 'exact, head: true }).eq(\'user_id', id),
-    }
-    )
+    supabaseAdmin.from('posts').select('*', { count: 'exact', head: true }).eq('user_id', id),
     supabaseAdmin.from('sessions')
       .select('id, title, scheduled_at, status, client:client_id(name, avatar)')
       .eq('expert_id', id)
       .order('scheduled_at', { ascending: false })
       .limit(5)
   ]);
+
+  if (sessionsError) {
+    console.error('Sessions fetch error:', sessionsError);
+  }
 
   res.json({
     success: true,
